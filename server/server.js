@@ -12,7 +12,15 @@ const errorMiddleware=require ("./middlewares/error-middleware");
 
 
 const corsOptions = {
+<<<<<<< HEAD
   origin: "https://gig-swap-hsp-client.vercel.app",
+=======
+<<<<<<< HEAD
+  origin: "https://gig-swap-hsp-client.vercel.app",
+=======
+  origin: "https://gig-swap-hsp-frontend.vercel.app",
+>>>>>>> 75913bea62488062815fa5c727bde8148a3d0307
+>>>>>>> dca425338984e42e6e57a4df70969c15455845aa
   methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
   credentials: true,
 };
