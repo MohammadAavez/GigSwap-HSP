@@ -14,11 +14,7 @@ export const Login = () => {
   const navigate = useNavigate();
 
   const { storeTokenInLS } = useAuth();
-<<<<<<< HEAD
-  const URL = "https://gig-swap-hsp-server.vercel.app/api/auth/login";
-=======
   const URL = "https://gig-swap-hsp-backend.vercel.app/api/auth/login";
->>>>>>> 75913bea62488062815fa5c727bde8148a3d0307
 
   // let handle the input field value
   const handleInput = (e) => {

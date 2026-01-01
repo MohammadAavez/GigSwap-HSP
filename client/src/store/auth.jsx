@@ -35,11 +35,7 @@ export const AuthProvider = ({ children }) => {
         return;
       }
 
-<<<<<<< HEAD
-      const response = await fetch("https://gig-swap-hsp-server.vercel.app/api/auth/user", {
-=======
       const response = await fetch("https://gig-swap-hsp-backend.vercel.app/api/auth/user", {
->>>>>>> 75913bea62488062815fa5c727bde8148a3d0307
         method: "GET",
         headers: {
           Authorization: authorizationToken,
@@ -63,7 +59,7 @@ export const AuthProvider = ({ children }) => {
   // Fetch services
   const getServices = async () => {
     try {
-      const response = await fetch("https://gig-swap-hsp-server.vercel.app/api/data/service");
+      const response = await fetch("https://gig-swap-hsp-backend.vercel.app/api/data/service");
       if (response.ok) {
         const data = await response.json();
         setServices(data.msg);

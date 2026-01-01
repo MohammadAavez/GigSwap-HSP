@@ -9,7 +9,7 @@ export const AdminContacts = () => {
   const { authorizationToken } = useAuth();
   const getContactsData = async () => {
     try {
-      const response = await fetch("https://gig-swap-hsp-server.vercel.app/api/admin/contacts", {
+      const response = await fetch("https://gig-swap-hsp-backend.vercel.app/api/admin/contacts", {
         method: "GET",
         headers: {
           Authorization: authorizationToken,
@@ -32,7 +32,7 @@ export const AdminContacts = () => {
    
      try {
       
-       const response =await fetch(`https://gig-swap-hsp-server.vercel.app/api/admin/contacts/delete/${id}`,{
+       const response =await fetch(`https://gig-swap-hsp-backend.vercel.app/api/admin/contacts/delete/${id}`,{
          method:"DELETE",
          headers:{
           Authorization:authorizationToken,

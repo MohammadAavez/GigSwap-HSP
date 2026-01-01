@@ -51,7 +51,7 @@ export const Contact = () => {
 
     try {
       // The fetch call now sends the new 'time' field along with other form data
-      const response = await fetch("https://gig-swap-hsp-server.vercel.app/api/form/contact", {
+      const response = await fetch("https://gig-swap-hsp-backend.vercel.app/api/form/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
