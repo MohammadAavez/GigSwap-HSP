@@ -17,7 +17,7 @@ export const Home = () => {
               <p>A Home Service Provider</p>
               <h1>Welcome to GigSwap</h1>
               <p>
-                Need reliable home services? GigSwap brings the best local
+                Need reliable home services? Servax brings the best local
                 professionals—cleaning, repairs, gardening, and more—right to
                 your doorstep. Our carefully vetted providers ensure quality,
                 convenience, and peace of mind every time.

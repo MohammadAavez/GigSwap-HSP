@@ -15,6 +15,8 @@ import { AdminLayout } from "./components/layouts/Admin-Layout";
 import { AdminUsers } from "./pages/Admin-Users";
 import { AdminContacts } from "./pages/Admin-Contacts";
 import { AdminUpdate } from "./pages/Admin-Update";
+import { WorkerLayout } from "./components/layouts/Worker-Layout";
+import { WorkerContacts } from "./pages/Worker-Contacts";
 import Cleaner from "./pages/Details/Cleaner";
 import Electrician from "./pages/Details/Electrician";
 import Plumbing from "./pages/Details/Plumbing";
@@ -31,8 +33,7 @@ const App = () => {
       <div className="app-container">
         
       <BrowserRouter>
-        <Navbar/>
-        <GoogleTranslate />
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -54,6 +55,10 @@ const App = () => {
             <Route path="users" element={<AdminUsers />} />
             <Route path="contacts" element={<AdminContacts />} />
             <Route path="users/:id/edit" element={<AdminUpdate />} />
+          </Route>
+
+          <Route path="/worker" element={<WorkerLayout />}>
+            <Route path="contacts" element={<WorkerContacts />} />
           </Route>
         </Routes>
         <Footer />

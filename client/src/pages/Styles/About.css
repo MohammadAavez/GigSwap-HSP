@@ -67,7 +67,7 @@ body {
 .about-btn-secondary {
   background-color: transparent;
   color:#c432ec;
-  border: 2px solid#c432ec;
+  border: 2px solid #c432ec;
 }
 .about-btn-secondary:hover {
   background-color: #c432ec;

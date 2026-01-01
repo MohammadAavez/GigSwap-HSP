@@ -20,7 +20,11 @@ export const Register = () => {
 
   const { storeTokenInLS } = useAuth();
 
+<<<<<<< HEAD
+  const URL = "https://gig-swap-hsp-server.vercel.app/api/auth/register";
+=======
   const URL = "https://gig-swap-hsp-backend.vercel.app/api/auth/register";
+>>>>>>> 75913bea62488062815fa5c727bde8148a3d0307
 
   const handleInput = (e) => {
     console.log(e);

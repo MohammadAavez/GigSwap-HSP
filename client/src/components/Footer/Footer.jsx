@@ -17,7 +17,7 @@ export const Footer = () => {
         <div className="footer-section">
           <h4>Contact Us</h4>
           <p><FaPhoneAlt className="footer-icon" /> +91 0000000000</p>
-          <p><FaEnvelope className="footer-icon" /> support@gigswap.com</p>
+          <p><FaEnvelope className="footer-icon" /> support@GigSwap.com</p>
           <p><FaMapMarkerAlt className="footer-icon" /> Nanded, MH India</p>
         </div>
 

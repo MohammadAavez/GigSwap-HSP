@@ -24,6 +24,11 @@ const userSchema=new mongoose.Schema({
     type:Boolean,
     default:false,
   },
+
+  isWorker:{
+    type:Boolean,
+    default:false,
+  },
 });
 
 
@@ -37,7 +42,7 @@ userSchema.pre("save",async function(next){
     const user=this;
 
     if(!user.isModified("password")){
-      next();
+      return next();
     }
 
     try{
@@ -64,6 +69,7 @@ userSchema.methods.generateToken=async function(){
       userId:this._id.toString(),
       email:this.email,
       isAdmin:this.isAdmin,
+      isWorker: this.isWorker,
     },
     process.env.JWT_SECRET_KEY,
     {
