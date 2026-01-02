@@ -10,9 +10,8 @@ export const Navbar = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const toggleMenu = () => setSidebarOpen(!isSidebarOpen);
 
-  // // Don't render the navbar until user data is loaded
   // if (isLoading) {
-  //   return null; // or a loading spinner
+  //   return null;
   // }
 
   return (
@@ -21,9 +20,11 @@ export const Navbar = () => {
         <div className="logo-brand">
           <NavLink to="/">GigSwap</NavLink>
         </div>
+
         <div className="menu-toggle" onClick={toggleMenu}>
           {isSidebarOpen ? <FaTimes /> : <FaBars />}
         </div>
+
         <nav
           className={isSidebarOpen ? "active" : ""}
           onClick={() => setSidebarOpen(false)}
@@ -32,12 +33,15 @@ export const Navbar = () => {
             <li>
               <NavLink to="/">Home</NavLink>
             </li>
+
             <li>
               <NavLink to="/about">About</NavLink>
             </li>
+
             <li>
               <NavLink to="/service">Services</NavLink>
             </li>
+
             {isLoggedIn ? (
               <li>
                 <NavLink to="/contact">Book</NavLink>
@@ -47,11 +51,21 @@ export const Navbar = () => {
                 <NavLink to="/login">Book</NavLink>
               </li>
             )}
+
+            {/* ✅ Admin Panel */}
             {isLoggedIn && user?.isAdmin && (
               <li>
                 <NavLink to="/admin/users">Admin Panel</NavLink>
               </li>
             )}
+
+            {/* ✅ Worker Panel (🔥 NEW) */}
+            {isLoggedIn && user?.isWorker && (
+              <li>
+                <NavLink to="/worker/contacts">Worker Panel</NavLink>
+              </li>
+            )}
+
             {isLoggedIn ? (
               <li>
                 <NavLink to="/logout">Logout</NavLink>
