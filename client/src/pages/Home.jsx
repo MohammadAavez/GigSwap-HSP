@@ -62,6 +62,9 @@ export const Home = () => {
             <p>We are here to help you</p>
             <h1>Get Started Today</h1>
             <p>
+               <li>
+                <NavLink to="/worker/contacts">Worker Panel</NavLink>
+              </li>
               Ready to take the first step towards a more efficient and secure
               IT infrastructure? Contact us today for a free consultation and
               let's discuss how Thapa Technical can help your business thrive in
