@@ -64,6 +64,9 @@ export const Home = () => {
             <p>
                <li>
                 <NavLink to="/worker/contacts">Worker Panel</NavLink>
+                 <li>
+                <NavLink to="/worker">Worker</NavLink>
+              </li>
               </li>
               Ready to take the first step towards a more efficient and secure
               IT infrastructure? Contact us today for a free consultation and
