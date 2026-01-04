@@ -77,7 +77,7 @@ export const Home = () => {
                   <button className="first-btn">book now</button>
                 </NavLink>
               )}
-              <NavLink to="/worker/contacts">
+              <NavLink to="/service">
                 <button className=" secondary-btn">services</button>
               </NavLink>
             </div>
