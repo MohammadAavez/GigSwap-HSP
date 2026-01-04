@@ -62,7 +62,7 @@ export const Navbar = () => {
             {/* ✅ Worker Panel (🔥 NEW) */}
             {isLoggedIn && user?.isWorker && (
               <li>
-                <NavLink to="/worker">Worker Panel</NavLink>
+                <NavLink to="/worker/contacts">Worker Panel</NavLink>
               </li>
             )}
 
