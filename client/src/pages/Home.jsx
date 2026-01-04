@@ -65,7 +65,7 @@ export const Home = () => {
                <li>
                 <NavLink to="/worker/contacts">Worker Panel</NavLink>
                  <li>
-                <NavLink to="/worker">Worker</NavLink>
+                <NavLink to="/worker">Workers</NavLink>
               </li>
               </li>
               Ready to take the first step towards a more efficient and secure
