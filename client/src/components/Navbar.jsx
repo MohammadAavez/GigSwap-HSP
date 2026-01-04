@@ -10,12 +10,11 @@ export const Navbar = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const toggleMenu = () => setSidebarOpen(!isSidebarOpen);
 
-    console.log("NAVBAR USER:", user);
-    console.log("isLoading:", isLoading);
+ 
    
-  // if (isLoading) {
-  //   return null;
-  // }
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <header>
