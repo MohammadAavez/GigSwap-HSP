@@ -10,7 +10,6 @@ import { Navbar } from "./components/Navbar";
 import { Error } from "./pages/Error";
 import { Footer } from "./components/Footer/Footer";
 import { Logout } from "./pages/Logout";
-import { WokerDashboard } from "./pages/WorkerDashboard";
 import { AdminLayout } from "./components/layouts/Admin-Layout";
 import { AdminUsers } from "./pages/Admin-Users";
 import { AdminContacts } from "./pages/Admin-Contacts";
@@ -42,7 +41,6 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/worker" element={<WokerDashboard/>}/>
           <Route path="*" element={<Error />} />
           <Route path="/cleaner" element={<Cleaner />} />
           <Route path="/electrician" element={<Electrician />} />
