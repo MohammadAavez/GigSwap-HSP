@@ -58,7 +58,7 @@ const App = () => {
           </Route>
 
           <Route path="/worker" element={<WorkerLayout />}>
-            <Route path="contacts" element={<AdminContacts />} />
+            <Route path="contacts" element={<WorkerContacts />} />
           </Route>
         </Routes>
         <Footer />
