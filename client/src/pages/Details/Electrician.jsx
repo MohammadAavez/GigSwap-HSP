@@ -18,9 +18,10 @@ const Electrician = () => {
           <p className="sd-address">nanded</p>
           <p className="sd-time">Available: 9:00 AM - 7:00 PM</p>
         </div>
-        {/* Added button */}
+        
+        {/* URL mein ?service=Electrician add kiya hai */}
         {isLoggedIn ? (
-          <NavLink to="/contact">
+          <NavLink to="/contact?service=Electrician">
             <button className="sd-book-btn">Book Now</button>
           </NavLink>
         ) : (
@@ -39,16 +40,9 @@ const Electrician = () => {
 
         <div>
           <h3>Worker Detail:-</h3>
-          <p>
-            <strong>Name</strong> - David Brown
-          </p>
-          <p>
-            <strong>Experience</strong> - 10+ years
-          </p>
-          <p>
-            <strong>Specialties</strong> - "Wiring installation, electrical
-            repairs, lighting setup, circuit breaker replacement"
-          </p>
+          <p><strong>Name</strong> - David Brown</p>
+          <p><strong>Experience</strong> - 10+ years</p>
+          <p><strong>Specialties</strong> - "Wiring installation, electrical repairs, lighting setup, circuit breaker replacement"</p>
         </div>
 
         <br />
@@ -60,10 +54,8 @@ const Electrician = () => {
             commercial properties. Our team specializes in safe and reliable
             wiring, installing lighting fixtures, repairing faulty circuits,
             upgrading electrical panels, and handling emergency electrical
-            issues. We ensure compliance with all safety standards to keep your
-            home and business powered without interruptions.
+            issues.
           </i>
-          =
         </div>
 
         <div className="gallery">

@@ -10,7 +10,7 @@ export const AdminUsers = () => {
 
   const getAllUsersData = async () => {
     try {
-      const response = await fetch("https://gig-swap-hsp-backend.vercel.app/api/admin/users", {
+      const response = await fetch("http://localhost:8000/api/admin/users", {
         method: "GET",
         headers: {
           Authorization: authorizationToken,
@@ -29,7 +29,7 @@ export const AdminUsers = () => {
   const deleteUser = async (id) => {
     try {
       const response = await fetch(
-        ` https://gig-swap-hsp-backend.vercel.app/api/admin/users/delete/${id}`,
+        ` http://localhost:8000/api/admin/users/delete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -58,7 +58,7 @@ export const AdminUsers = () => {
     <>
       <section className="admin-users-section">
         <div className="container">
-          <h1>Admin Users Data</h1>
+          <h1>Users Details</h1>
         </div>
         <div className="container admin-users">
           <table>
@@ -67,8 +67,8 @@ export const AdminUsers = () => {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Update</th>
-                <th>Delete</th>
+                {/* <th>Update</th>
+                <th>Delete</th> */}
               </tr>
             </thead>
             <tbody>
@@ -78,13 +78,14 @@ export const AdminUsers = () => {
                     <td>{curUser.username}</td>
                     <td>{curUser.email}</td>
                     <td>{curUser.phone}</td>
-                    <td><Link to={`/admin/users/${curUser._id}/edit`}>Edit</Link></td>
+                    </tr>
+                    /* <td><Link to={`/admin/users/${curUser._id}/edit`}>Edit</Link></td>
                     <td>
                       <button onClick={() => deleteUser(curUser._id)}>
                         Delete
                       </button>
-                    </td>
-                  </tr>
+                    </td> */
+                  
                 );
               })}
             </tbody>

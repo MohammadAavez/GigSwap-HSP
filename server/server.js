@@ -6,13 +6,14 @@ const authRoute = require("./router/auth-router");
 const contactRoute=require("./router/contact-router");
 const serviceRoute=require("./router/service-router");
 const adminRoute =require("./router/admin-router");
+const workerRoute = require("./router/worker-router");
 const connectDb=require("./utils/db");
 const errorMiddleware=require ("./middlewares/error-middleware");
 
 
 
 const corsOptions = {
-  origin: "https://gig-swap-hsp-frontend.vercel.app",
+  origin: "http://localhost:5173",
   methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
   credentials: true,
 };
@@ -27,8 +28,10 @@ app.use("/api/auth",authRoute);
 app.use("/api/form",contactRoute);
 app.use("/api/data",serviceRoute);
 
-// lets define admin route
+// lets define admin route and worker route
 app.use("/api/admin",adminRoute);
+app.use("/api/worker", workerRoute);
+
 app.use(errorMiddleware);
 
 // app.get("/", (req, res) => {

@@ -18,9 +18,10 @@ const PestControl = () => {
           <p className="sd-address">nanded</p>
           <p className="sd-time">Available: 9:00 AM - 7:00 PM</p>
         </div>
-        {/* Added button */}
+        
+        {/* ✅ URL Parameter: ?service=Pest Control */}
         {isLoggedIn ? (
-          <NavLink to="/contact">
+          <NavLink to="/contact?service=Pest Control">
             <button className="sd-book-btn">Book Now</button>
           </NavLink>
         ) : (

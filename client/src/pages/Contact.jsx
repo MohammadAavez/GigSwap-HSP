@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom"; // Hook import kiya
 import "./Styles/Contact.css";
 import { useAuth } from "../store/auth";
 import { toast } from "react-toastify";
 
-// Added 'time' to the default form data
 const defaultContactFormData = {
   username: "",
   email: "",
@@ -16,206 +16,142 @@ const defaultContactFormData = {
 export const Contact = () => {
   const [contact, setContact] = useState(defaultContactFormData);
   const [userData, setUserData] = useState(true);
+  const [loadingLocation, setLoadingLocation] = useState(false);
 
   const { user } = useAuth();
+  const location = useLocation(); // Location initialize kiya
 
-  // Use useEffect to prevent the state update loop
+  // --- NEW LOGIC: URL se service read karne ke liye ---
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const serviceFromURL = params.get("service");
+    if (serviceFromURL) {
+      setContact((prev) => ({ ...prev, message: serviceFromURL }));
+    }
+  }, [location]);
+
   useEffect(() => {
     if (userData && user) {
-      setContact({
+      setContact((prev) => ({
+        ...prev,
         username: user.username,
         email: user.email,
-        message: "",
-        address: "",
-        date: "",
-        time: "", // Initialize the new 'time' field
-      });
+        message: contact.message || prev.message, // URL wali value preserve rakhega
+      }));
       setUserData(false);
     }
-  }, [userData, user]);
+  }, [userData, user, contact.message]);
 
-  // handleInput remains the same as it correctly handles all input fields
-  const handleInput = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      return toast.error("Geolocation is not supported by your browser");
+    }
+    setLoadingLocation(true);
+    const options = { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 };
 
-    setContact({
-      ...contact,
-      [name]: value,
-    });
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const mapLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
+        setContact((prev) => ({ ...prev, address: mapLink }));
+        toast.success("Exact Location Captured! 📍");
+        setLoadingLocation(false);
+      },
+      (error) => {
+        setLoadingLocation(false);
+        toast.error("Error: " + error.message);
+      },
+      options
+    );
   };
 
-  // handle form submission
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setContact({ ...contact, [name]: value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if (!contact.address) return toast.warn("Please capture your location first!");
     try {
-      // The fetch call now sends the new 'time' field along with other form data
-      const response = await fetch("https://gig-swap-hsp-backend.vercel.app/api/form/contact", {
+      const response = await fetch("http://localhost:8000/api/form/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(contact),
       });
-
       if (response.ok) {
-        setContact(defaultContactFormData);
-        const data = await response.json();
-        console.log(data);
-        toast.success(
-          "Service Booked Successfully. A confirmation email has been sent."
-        );
+        setContact({ ...defaultContactFormData, username: user.username, email: user.email });
+        toast.success("Service Booked Successfully. A confirmation email has been sent.");
       } else {
         toast.error("Failed to book service.");
       }
     } catch (error) {
-      toast.error("Invalid Credentials or network error.");
-      console.log("Error during form submission:", error);
+      toast.error("Network error.");
     }
   };
 
   return (
-    <>
-      <section className="section-contact">
-        <div className="contact-content container">
-          <h1 className="main-heading">Book Your Service</h1>
-        </div>
-        {/* contact page main  */}
-        <div className="container grid grid-two-cols">
-          <div className="contact-img">
-            <img src="/images/support.png" alt="we are always ready to help" />
-          </div>
-
-          {/* contact form content actual  */}
-          <section className="section-form">
-            <form onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="username">username</label>
-                <input
-                  type="text"
-                  name="username"
-                  id="username"
-                  autoComplete="off"
-                  value={contact.username}
-                  onChange={handleInput}
-                  required
-                />
+    <section className="section-contact">
+      <div className="contact-content container">
+        <h1 className="main-heading">Book Your Service</h1>
+      </div>
+      <div className="container grid grid-two-cols">
+        <div className="contact-img"><img src="/images/support.png" alt="support" /></div>
+        <section className="section-form">
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="username">Username</label>
+              <input type="text" name="username" value={contact.username} readOnly />
+            </div>
+            <div>
+              <label htmlFor="email">Email</label>
+              <input type="email" name="email" value={contact.email} readOnly />
+            </div>
+            <div>
+              <label htmlFor="message">Services</label>
+              <select 
+                name="message" 
+                value={contact.message} 
+                onChange={handleInput} 
+                required
+                style={{ width: "100%", padding: "10px", borderRadius: "5px", marginTop: "5px", border: "1px solid #ccc", backgroundColor: "#fff" }}
+              >
+                <option value="">Select Service</option>
+                <option value="Electrician">Electrician</option>
+                <option value="Plumbing">Plumbing</option>
+                <option value="Ac-Repair">Ac-Repair</option>
+                <option value="Cleaner">Cleaner</option>
+                <option value="Carpenter">Carpenter</option>
+                <option value="Pest Control">Pest Control</option>
+              </select>
+            </div>
+            <div style={{ marginBottom: "15px" }}>
+              <label>Service Location</label>
+              <div style={{ marginTop: "10px" }}>
+                {!contact.address ? (
+                  <button type="button" onClick={getLocation} style={{ background: "#9f6fffff", color: "#fff", border: "none", padding: "12px", borderRadius: "5px", width: "100%", fontWeight: "bold" }}>
+                    {loadingLocation ? "Detecting Location..." : "📍 Click to Get Current Location"}
+                  </button>
+                ) : (
+                  <div style={{ padding: "12px", border: "2px solid #28a745", borderRadius: "5px", textAlign: "center", backgroundColor: "#f8fff9" }}>
+                    <a href={contact.address} target="_blank" rel="noreferrer" style={{ color: "#28a745", fontWeight: "bold", textDecoration: "none" }}>✅ Location Captured (View Map)</a>
+                    <p onClick={() => setContact({...contact, address: ""})} style={{ color: "#dc3545", fontSize: "12px", cursor: "pointer", marginTop: "8px", textDecoration: "underline" }}>Try again</p>
+                  </div>
+                )}
               </div>
-
-              <div>
-                <label htmlFor="email">email</label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  autoComplete="off"
-                  value={contact.email}
-                  onChange={handleInput}
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message">Services</label>
-                <select
-                  name="message"
-                  id="select"
-                  autoComplete="off"
-                  value={contact.message}
-                  onChange={handleInput}
-                >
-                  <option>Select</option>
-                  <option>Electrician</option>
-                  <option>Plumbing</option>
-                  <option> Ac-Repair </option>
-                  <option> Cleaner </option>
-                  <option> Carpenter </option>
-                  <option> Pest Control </option>
-                </select>
-              </div>
-
-              {/* Added the new time input field */}
-              <div>
-                <label htmlFor="date">Date</label>
-                <input
-                  type="date"
-                  name="date"
-                  value={contact.date}
-                  onChange={handleInput}
-                  min={new Date().toISOString().split("T")[0]}
-                  required
-                />
-              </div>
-
-              {/* Added the new time input field */}
-              <div>
-                <label htmlFor="time">Time</label>
-                <input
-                  type="time"
-                  name="time"
-                  id="time"
-                  value={contact.time}
-                  onChange={handleInput}
-                  required
-                />
-              </div>
-
-              
-              <div>
-                <label htmlFor="address">Address (Nanded City Areas)</label>
-                <select
-                  name="address"
-                  id="address"
-                  value={contact.address}
-                  onChange={handleInput}
-                  required
-                  style={{ width: "100%", padding: "8px", marginTop: "5px" }}
-                >
-                  <option value="">-- Choose Area --</option>
-                  <option value="Vazirabad">Vazirabad</option>
-                  <option value="Taroda Naka">Taroda Naka</option>
-                  <option value="Workshops">Workshops</option>
-                  <option value="Bhagya Nagar">Bhagya Nagar</option>
-                  <option value="Cidco">Cidco</option>
-                  <option value="Hudco">Hudco</option>
-                  <option value="Kautha">Kautha</option>
-                  <option value="Peer Burhan Nagar">Peer Burhan Nagar</option>
-                  <option value="Khadak Pura">Khadak Pura</option>
-                  <option value="Barki Chowk">Barki Chowk</option>
-                  <option value="VishnuPuri">VishnuPuri</option>
-                  <option value="Shrinagar">Shrinagar</option>
-                  <option value="Degloor Naka">Degloor Naka</option>
-                  <option value="Shivaji Nagar">Shivaji Nagar</option>
-                  <option value="Gokul Nagar">Gokul Nagar</option>
-                  <option value="Kala Mandir">Kala Mandir</option>
-                  <option value="Barkat Pura">Barkat Pura</option>
-                  <option value="Waje Gaon">Waje Gaon</option>
-                  <option value="Raj Corner">Raj Corner</option>
-
-                  {/* Baaki sabhi areas yahan add karein */}
-                </select>
-              </div>
-
-              <div></div>
-              <div>
-                <button type="submit">Book</button>
-              </div>
-            </form>
-          </section>
-        </div>
-
-        <section className="mb-3">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1978.5624118703483!2d77.3097348290443!3d19.153504666056282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd1d640295f68b3%3A0x52ce2e1cbead222f!2sVazirabad%2C%20Nanded%2C%20Nanded-Waghala%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1752240517734!5m2!1sen!2sin"
-            width="100%"
-            height="450"
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
+            </div>
+            <div>
+              <label htmlFor="date">Date</label>
+              <input type="date" name="date" value={contact.date} onChange={handleInput} min={new Date().toISOString().split("T")[0]} required />
+            </div>
+            <div>
+              <label htmlFor="time">Time</label>
+              <input type="time" name="time" value={contact.time} onChange={handleInput} required />
+            </div>
+            <button type="submit" className="btn-submit" style={{ marginTop: "20px", width: "100%", padding: "12px", fontWeight: "bold" }}>Book Now</button>
+          </form>
         </section>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };

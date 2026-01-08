@@ -26,7 +26,7 @@ export const AdminLayout=()=>{
             <li><NavLink to="/admin/contacts" >
              <FaMessage/> Bookings
             </NavLink> </li>
-            <li><NavLink to="/admin/users" ><FaHome/>Home</NavLink> </li>
+            <li><NavLink to="/admin/users" ><FaHome/>Users Details</NavLink> </li>
           </ul>
         </nav>
       </div>
