@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 export const WorkerContacts = () => {
   const [contactData, setContactData] = useState([]);
-  const { authorizationToken, user } = useAuth(); 
+  const { authorizationToken, user } = useAuth();
 
   const getContactsData = async () => {
     try {
@@ -45,7 +45,7 @@ export const WorkerContacts = () => {
           },
           body: JSON.stringify({ 
             status: status, 
-            workerName: user.username 
+            workerName: user.username // Yahan worker ka naam backend ko ja raha hai lock karne ke liye
           }),
         });
 
@@ -68,15 +68,14 @@ export const WorkerContacts = () => {
 
       <div className="container worker-contacts">
         {contactData.map((cur) => {
-          const { username, email, message, address, time, date, _id, status, acceptedBy } = cur;
+          const { username, message, time, date, _id, status, acceptedBy } = cur;
 
-          // 🟢 Logic: Kya is service ko kisi aur ne accept kar liya hai?
-          const isTakenByOthers = (status === "Accepted" || status === "Completed") && acceptedBy !== user.username;
-          // 🟢 Logic: Kya ye service maine (current worker) accept ki hai?
-          const isTakenByMe = (status === "Accepted" || status === "Completed") && acceptedBy === user.username;
+          // 🔴 NEW LOGIC: Agar acceptedBy mein kisi ka naam hai aur wo MERA naam nahi hai
+          // Iska matlab kisi aur worker ne is service par action le liya hai (Pending/Accepted/Completed kuch bhi)
+          const isLockedByOthers = acceptedBy && acceptedBy !== user.username;
 
           return (
-            <div key={_id} className="contact-card" style={{ opacity: isTakenByOthers ? 0.7 : 1 }}>
+            <div key={_id} className="contact-card" style={{ opacity: isLockedByOthers ? 0.6 : 1 }}>
               <p><strong>Customer:</strong> {username}</p>
               <p><strong>Service:</strong> {message}</p>
               <p><strong>Date:</strong> {new Date(date).toLocaleDateString()}</p>
@@ -86,21 +85,23 @@ export const WorkerContacts = () => {
                 <strong>Status:</strong>{" "}
                 <span className={`status-badge ${status || "Pending"}`}>
                   {status || "Pending"} 
-                  {isTakenByOthers && ` (Taken by ${acceptedBy})`}
+                  {isLockedByOthers && ` (Taken by ${acceptedBy})`}
                 </span>
               </p>
 
               <div className="status-buttons">
-                {isTakenByOthers ? (
-                  // 🔴 Agar kisi aur ne le liya hai toh kuch nahi dikhega ya message dikhega
-                  <p style={{ color: "red", fontWeight: "bold" }}>Not Available</p>
+                {isLockedByOthers ? (
+                  // Agar kisi dusre worker ne claim kiya hai, toh buttons hide ho jayenge
+                  <p style={{ color: "#d9534f", fontWeight: "bold", marginTop: "10px" }}>
+                    Occupied by another worker
+                  </p>
                 ) : (
-                  // 🔵 Agar Available hai ya Maine hi accept kiya hai, toh buttons dikhao
+                  // Agar service khali hai (acceptedBy null hai) ya Maine li hai, toh buttons dikhao
                   <>
                     <button 
                       className="btn accept" 
                       onClick={() => handleStatus(_id, "Accepted")}
-                      disabled={status === "Accepted"} // Agar pehle se accepted hai toh button disable
+                      disabled={status === "Accepted"}
                     >
                       {status === "Accepted" ? "Accepted" : "Accept"}
                     </button>
