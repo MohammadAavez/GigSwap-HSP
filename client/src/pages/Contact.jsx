@@ -74,7 +74,7 @@ export const Contact = () => {
     e.preventDefault();
     if (!contact.address) return toast.warn("Please capture your location first!");
     try {
-      const response = await fetch("http://localhost:8000/api/form/contact", {
+      const response = await fetch("https://gig-swap-hsp-backend.vercel.app/api/form/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(contact),

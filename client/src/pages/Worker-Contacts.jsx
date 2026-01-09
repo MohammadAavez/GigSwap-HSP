@@ -9,7 +9,7 @@ export const WorkerContacts = () => {
   const getContactsData = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8000/api/worker/contacts",
+        "https://gig-swap-hsp-backend.vercel.app/api/worker/contacts",
         {
           method: "GET",
           headers: {
