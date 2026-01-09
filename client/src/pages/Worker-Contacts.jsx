@@ -45,7 +45,7 @@ export const WorkerContacts = () => {
           },
           body: JSON.stringify({ 
             status: status, 
-            workerName: user.username // Yahan worker ka naam backend ko ja raha hai lock karne ke liye
+            workerName: user.username 
           }),
         });
 
@@ -68,10 +68,9 @@ export const WorkerContacts = () => {
 
       <div className="container worker-contacts">
         {contactData.map((cur) => {
-          const { username, message, time, date, _id, status, acceptedBy } = cur;
+          // email agar chahiye toh yahan add kar sakte hain, abhi address add kiya hai
+          const { username, message, address, time, date, _id, status, acceptedBy } = cur;
 
-          // 🔴 NEW LOGIC: Agar acceptedBy mein kisi ka naam hai aur wo MERA naam nahi hai
-          // Iska matlab kisi aur worker ne is service par action le liya hai (Pending/Accepted/Completed kuch bhi)
           const isLockedByOthers = acceptedBy && acceptedBy !== user.username;
 
           return (
@@ -81,6 +80,14 @@ export const WorkerContacts = () => {
               <p><strong>Date:</strong> {new Date(date).toLocaleDateString()}</p>
               <p><strong>Time:</strong> {time}</p>
               
+              {/* ✅ Address section Admin panel ke format mein */}
+              <p>
+                <strong>Address:</strong>{" "}
+                <a href={address} target="_blank" rel="noreferrer" style={{ color: "#007bff", fontWeight: "bold", textDecoration: "underline" }}>
+                  View Customer Location 📍
+                </a>
+              </p>
+
               <p>
                 <strong>Status:</strong>{" "}
                 <span className={`status-badge ${status || "Pending"}`}>
@@ -91,12 +98,10 @@ export const WorkerContacts = () => {
 
               <div className="status-buttons">
                 {isLockedByOthers ? (
-                  // Agar kisi dusre worker ne claim kiya hai, toh buttons hide ho jayenge
                   <p style={{ color: "#d9534f", fontWeight: "bold", marginTop: "10px" }}>
                     Occupied by another worker
                   </p>
                 ) : (
-                  // Agar service khali hai (acceptedBy null hai) ya Maine li hai, toh buttons dikhao
                   <>
                     <button 
                       className="btn accept" 
