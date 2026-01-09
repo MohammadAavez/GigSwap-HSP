@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 export const WorkerContacts = () => {
   const [contactData, setContactData] = useState([]);
-  const { authorizationToken, user } = useAuth(); // 'user' se worker ka naam milega
+  const { authorizationToken, user } = useAuth(); 
 
   const getContactsData = async () => {
     try {
@@ -32,9 +32,7 @@ export const WorkerContacts = () => {
     getContactsData();
   }, []);
 
-  // 🟢 Naya Status Handler with Popups & DB Update
   const handleStatus = async (id, status) => {
-    // 1. Confirmation Popup
     const isConfirmed = window.confirm(`Kya aap is booking ko "${status}" mark karna chahte hain?`);
     
     if (isConfirmed) {
@@ -47,13 +45,13 @@ export const WorkerContacts = () => {
           },
           body: JSON.stringify({ 
             status: status, 
-            workerName: user.username // Auth se worker ka naam bhej rahe hain
+            workerName: user.username 
           }),
         });
 
         if (response.ok) {
           toast.success(`Status updated to ${status}`);
-          getContactsData(); // List refresh karne ke liye
+          getContactsData(); 
         } else {
           toast.error("Status update fail ho gaya");
         }
@@ -70,40 +68,60 @@ export const WorkerContacts = () => {
 
       <div className="container worker-contacts">
         {contactData.map((cur) => {
-          const { username, email, message, address, time, date, _id, status } = cur;
+          const { username, email, message, address, time, date, _id, status, acceptedBy } = cur;
+
+          // 🟢 Logic: Kya is service ko kisi aur ne accept kar liya hai?
+          const isTakenByOthers = (status === "Accepted" || status === "Completed") && acceptedBy !== user.username;
+          // 🟢 Logic: Kya ye service maine (current worker) accept ki hai?
+          const isTakenByMe = (status === "Accepted" || status === "Completed") && acceptedBy === user.username;
 
           return (
-            <div key={_id} className="contact-card">
+            <div key={_id} className="contact-card" style={{ opacity: isTakenByOthers ? 0.7 : 1 }}>
               <p><strong>Customer:</strong> {username}</p>
-              <p><strong>Email:</strong> {email}</p>
               <p><strong>Service:</strong> {message}</p>
               <p><strong>Date:</strong> {new Date(date).toLocaleDateString()}</p>
               <p><strong>Time:</strong> {time}</p>
               
               <p>
-                <strong>Address:</strong>{" "}
-                <a href={address} target="_blank" rel="noreferrer" className="map-link">
-                  View on Map 📍
-                </a>
-              </p>
-
-              <p>
                 <strong>Status:</strong>{" "}
                 <span className={`status-badge ${status || "Pending"}`}>
-                  {status || "Pending"}
+                  {status || "Pending"} 
+                  {isTakenByOthers && ` (Taken by ${acceptedBy})`}
                 </span>
               </p>
 
               <div className="status-buttons">
-                <button className="btn accept" onClick={() => handleStatus(_id, "Accepted")}>
-                  Accept
-                </button>
-                <button className="btn pending" onClick={() => handleStatus(_id, "Pending")}>
-                  Pending
-                </button>
-                <button className="btn completed" onClick={() => handleStatus(_id, "Completed")}>
-                  Completed
-                </button>
+                {isTakenByOthers ? (
+                  // 🔴 Agar kisi aur ne le liya hai toh kuch nahi dikhega ya message dikhega
+                  <p style={{ color: "red", fontWeight: "bold" }}>Not Available</p>
+                ) : (
+                  // 🔵 Agar Available hai ya Maine hi accept kiya hai, toh buttons dikhao
+                  <>
+                    <button 
+                      className="btn accept" 
+                      onClick={() => handleStatus(_id, "Accepted")}
+                      disabled={status === "Accepted"} // Agar pehle se accepted hai toh button disable
+                    >
+                      {status === "Accepted" ? "Accepted" : "Accept"}
+                    </button>
+
+                    <button 
+                      className="btn pending" 
+                      onClick={() => handleStatus(_id, "Pending")}
+                      disabled={status === "Pending" || !status}
+                    >
+                      Pending
+                    </button>
+
+                    <button 
+                      className="btn completed" 
+                      onClick={() => handleStatus(_id, "Completed")}
+                      disabled={status === "Completed"}
+                    >
+                      Completed
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           );
