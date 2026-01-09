@@ -45,7 +45,7 @@ export const WorkerContacts = () => {
           },
           body: JSON.stringify({ 
             status: status, 
-            workerName: user.username 
+            workerName: user.username // Yahan worker ka naam backend ko ja raha hai lock karne ke liye
           }),
         });
 
@@ -68,40 +68,35 @@ export const WorkerContacts = () => {
 
       <div className="container worker-contacts">
         {contactData.map((cur) => {
-          // 🟢 Added 'phone' and 'address' in destructuring
-          const { username, message, time, date, _id, status, acceptedBy, phone, address } = cur;
+          const { username, message, time, date, _id, status, acceptedBy } = cur;
 
+          // 🔴 NEW LOGIC: Agar acceptedBy mein kisi ka naam hai aur wo MERA naam nahi hai
+          // Iska matlab kisi aur worker ne is service par action le liya hai (Pending/Accepted/Completed kuch bhi)
           const isLockedByOthers = acceptedBy && acceptedBy !== user.username;
 
           return (
             <div key={_id} className="contact-card" style={{ opacity: isLockedByOthers ? 0.6 : 1 }}>
-              <div className="card-header">
-                <h3>Customer: {username}</h3>
+              <p><strong>Customer:</strong> {username}</p>
+              <p><strong>Service:</strong> {message}</p>
+              <p><strong>Date:</strong> {new Date(date).toLocaleDateString()}</p>
+              <p><strong>Time:</strong> {time}</p>
+              
+              <p>
+                <strong>Status:</strong>{" "}
                 <span className={`status-badge ${status || "Pending"}`}>
                   {status || "Pending"} 
                   {isLockedByOthers && ` (Taken by ${acceptedBy})`}
                 </span>
-              </div>
-
-              <div className="card-body">
-                <p><strong>Service:</strong> {message}</p>
-                <p><strong>Date:</strong> {new Date(date).toLocaleDateString()} | <strong>Time:</strong> {time}</p>
-                
-                {/* 📍 Location/Address Section */}
-                <p className="address-info">
-                  <strong>📍 Address:</strong> {address || "Not Provided"}
-                </p>
-
-                {/* 📞 Phone Number Section */}
-                <p className="phone-info">
-                  <strong>📞 Phone:</strong> {phone || "Not Provided"}
-                </p>
-              </div>
+              </p>
 
               <div className="status-buttons">
                 {isLockedByOthers ? (
-                  <p className="occupied-msg">Occupied by another worker</p>
+                  // Agar kisi dusre worker ne claim kiya hai, toh buttons hide ho jayenge
+                  <p style={{ color: "#d9534f", fontWeight: "bold", marginTop: "10px" }}>
+                    Occupied by another worker
+                  </p>
                 ) : (
+                  // Agar service khali hai (acceptedBy null hai) ya Maine li hai, toh buttons dikhao
                   <>
                     <button 
                       className="btn accept" 
