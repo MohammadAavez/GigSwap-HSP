@@ -66,7 +66,7 @@ export const AdminContacts = () => {
               <p>
                 <strong>Address:</strong>{" "}
                 <a href={address} target="_blank" rel="noreferrer" className="location-link">
-                  View Customer Location 📍
+                  View Customer Location.
                 </a>
               </p>
 
@@ -80,7 +80,7 @@ export const AdminContacts = () => {
 
                 {(status === "Accepted" || status === "Completed") && acceptedBy && (
                   <p className="worker-info">
-                    {status === "Accepted" ? "✅ Assigned to: " : "🏆 Completed by: "} 
+                    {status === "Accepted" ? " Accepted by: " : " Completed by: "} 
                     <strong>{acceptedBy}</strong>
                   </p>
                 )}

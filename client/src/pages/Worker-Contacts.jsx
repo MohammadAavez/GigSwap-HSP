@@ -84,7 +84,7 @@ export const WorkerContacts = () => {
               <p>
                 <strong>Address:</strong>{" "}
                 <a href={address} target="_blank" rel="noreferrer" style={{ color: "#007bff", fontWeight: "bold", textDecoration: "underline" }}>
-                  View Customer Location 📍
+                  View Customer Location.
                 </a>
               </p>
 
