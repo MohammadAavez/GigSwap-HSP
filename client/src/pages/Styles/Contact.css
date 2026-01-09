@@ -134,3 +134,12 @@ body {
   border-radius: 0.5rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
+
+.location div{
+
+  padding: "12px";
+  border: "2px solid #28a745";
+  border-radius: "5px";
+  text-align: "center";
+  background-color: "#f8fff9";
+}

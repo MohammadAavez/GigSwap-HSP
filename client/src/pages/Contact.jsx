@@ -133,7 +133,7 @@ export const Contact = () => {
                     {loadingLocation ? "Detecting Location..." : "📍 Click to Get Current Location"}
                   </button>
                 ) : (
-                  <div style={{ padding: "12px", border: "2px solid #28a745", borderRadius: "5px", textAlign: "center", backgroundColor: "#f8fff9" }}>
+                  <div className="location div">
                     <a href={contact.address} target="_blank" rel="noreferrer" style={{ color: "#28a745", fontWeight: "bold", textDecoration: "none" }}>✅ Location Captured (View Map)</a>
                     <p onClick={() => setContact({...contact, address: ""})} style={{ color: "#dc3545", fontSize: "12px", cursor: "pointer", marginTop: "8px", textDecoration: "underline" }}>Try again</p>
                   </div>
