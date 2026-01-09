@@ -1,0 +1,79 @@
+/* --- Desktop Default (Laptop View) --- */
+.admin-header {
+  background-color: #2a3f59;
+  padding: 1rem 0;
+  border-bottom: 2px solid #1a2a3a;
+}
+
+.admin-header .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.admin-header nav ul {
+  display: flex;
+  justify-content: flex-start;
+  list-style: none;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-header nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+.admin-header nav a:hover,
+.admin-header nav a.active {
+  color: #3498db;
+}
+
+/* --- Mobile Responsive (Buttons View) --- */
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 0.8rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .admin-header nav ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Do barabar buttons side-by-side */
+    gap: 10px;
+    padding: 0 10px;
+  }
+
+  .admin-header nav li {
+    width: 100%;
+  }
+
+  .admin-header nav a {
+    background-color: #3e5879; /* Button ka color */
+    padding: 10px 5px;
+    border-radius: 8px;
+    justify-content: center; /* Icon aur text center mein */
+    font-size: 0.9rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .admin-header nav a.active {
+    background-color: #3498db; /* Active button ka blue color */
+    color: white;
+    border: 1px solid #fff;
+  }
+  
+  /* Mobile par icon ko thoda bada karne ke liye */
+  .admin-header nav a svg {
+    font-size: 1.2rem;
+  }
+}
