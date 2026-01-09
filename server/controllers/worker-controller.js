@@ -1,5 +1,8 @@
 const Contact = require("../models/contact-model");
 
+// *-----------------------
+//   getAllContacts Logic
+// *-----------------------
 const getAllContacts = async (req, res, next) => {
   try {
     const contacts = await Contact.find();
@@ -12,19 +15,21 @@ const getAllContacts = async (req, res, next) => {
   }
 };
 
-// 🟢 Naya Function: Status Update karne ke liye
+// *---------------------------
+//  updateBookingStatus Logic
+// *---------------------------
 const updateBookingStatus = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { status, workerName } = req.body;
 
     const updateData = { status };
-    
-    // Agar Accept hua toh worker ka naam daalo, warna hata do
-    if (status === "Accepted") {
+
+    // ✅ Agar status Accepted ya Completed hai, toh worker ka naam save karo
+    if (status === "Accepted" || status === "Completed") {
       updateData.acceptedBy = workerName;
     } else if (status === "Pending") {
-      updateData.acceptedBy = null;
+      updateData.acceptedBy = null; // Pending hone par naam hata do
     }
 
     const updatedBooking = await Contact.findByIdAndUpdate(

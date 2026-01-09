@@ -82,16 +82,18 @@ export const AdminContacts = () => {
                   </span>
                 </p>
 
-                {status === "Accepted" && acceptedBy && (
+                {/* ✅ Accepted aur Completed dono par worker ka naam dikhega */}
+                {(status === "Accepted" || status === "Completed") && acceptedBy && (
                   <p style={{ margin: "5px 0 0 0", color: "#555", fontSize: "0.9rem" }}>
-                    ✅ <strong>Assigned to:</strong> {acceptedBy}
+                    {status === "Accepted" ? "✅ Assigned to: " : "🏆 Completed by: "} 
+                    <strong>{acceptedBy}</strong>
                   </p>
                 )}
               </div>
 
-              {/* <button className="btn" onClick={() => deleteContactById(_id)} style={{ backgroundColor: "#ff4d4d", marginTop: "15px", color: "white", border: "none", padding: "8px 12px", borderRadius: "4px", cursor: "pointer" }}>
+              <button className="btn" onClick={() => deleteContactById(_id)} style={{ backgroundColor: "#ff4d4d", marginTop: "15px", color: "white", border: "none", padding: "8px 12px", borderRadius: "4px", cursor: "pointer" }}>
                 Delete Booking
-              </button> */}
+              </button>
             </div>
           );
         })}
