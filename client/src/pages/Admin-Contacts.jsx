@@ -54,7 +54,7 @@ export const AdminContacts = () => {
 
       <div className="container admin-users">
         {contactData.map((curContactData, index) => {
-          const { username, email, message, address, time, date, _id } = curContactData;
+          const { username, email, message, address, time, date, _id, status, acceptedBy } = curContactData;
           return (
             <div key={index} className="contact-card" style={{ border: "1px solid #ccc", padding: "15px", borderRadius: "8px", marginBottom: "15px" }}>
               <p><strong>Name:</strong> {username}</p>
@@ -63,7 +63,6 @@ export const AdminContacts = () => {
               <p><strong>Date:</strong> {new Date(date).toLocaleDateString()}</p>
               <p><strong>Time:</strong> {time}</p>
               
-              {/* 📍 Dynamic Clickable Link */}
               <p>
                 <strong>Address:</strong>{" "}
                 <a href={address} target="_blank" rel="noreferrer" style={{ color: "#007bff", fontWeight: "bold", textDecoration: "underline" }}>
@@ -71,7 +70,26 @@ export const AdminContacts = () => {
                 </a>
               </p>
 
-              {/* <button className="btn" onClick={() => deleteContactById(_id)} style={{ backgroundColor: "#ff4d4d", marginTop: "10px" }}>
+              {/* 🟢 Status & Worker Info Section */}
+              <div style={{ marginTop: "10px", padding: "10px", backgroundColor: "#f9f9f9", borderRadius: "5px" }}>
+                <p>
+                  <strong>Current Status:</strong>{" "}
+                  <span style={{ 
+                    color: status === "Accepted" ? "green" : status === "Completed" ? "blue" : "orange",
+                    fontWeight: "bold"
+                  }}>
+                    {status || "Pending"}
+                  </span>
+                </p>
+
+                {status === "Accepted" && acceptedBy && (
+                  <p style={{ margin: "5px 0 0 0", color: "#555", fontSize: "0.9rem" }}>
+                    ✅ <strong>Assigned to:</strong> {acceptedBy}
+                  </p>
+                )}
+              </div>
+
+              {/* <button className="btn" onClick={() => deleteContactById(_id)} style={{ backgroundColor: "#ff4d4d", marginTop: "15px", color: "white", border: "none", padding: "8px 12px", borderRadius: "4px", cursor: "pointer" }}>
                 Delete Booking
               </button> */}
             </div>

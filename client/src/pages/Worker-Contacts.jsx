@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../store/auth";
 import "./Styles/Worker.css";
+import { toast } from "react-toastify";
 
 export const WorkerContacts = () => {
   const [contactData, setContactData] = useState([]);
-  const { authorizationToken } = useAuth();
+  const { authorizationToken, user } = useAuth(); // 'user' se worker ka naam milega
 
   const getContactsData = async () => {
     try {
@@ -23,7 +24,7 @@ export const WorkerContacts = () => {
         setContactData(data);
       }
     } catch (error) {
-      console.log(error);
+      console.log("Error fetching contacts:", error);
     }
   };
 
@@ -31,16 +32,36 @@ export const WorkerContacts = () => {
     getContactsData();
   }, []);
 
-  // 🔹 status change handler (frontend only)
-  const handleStatus = (id, status) => {
-    console.log("Booking ID:", id, "Status:", status);
+  // 🟢 Naya Status Handler with Popups & DB Update
+  const handleStatus = async (id, status) => {
+    // 1. Confirmation Popup
+    const isConfirmed = window.confirm(`Kya aap is booking ko "${status}" mark karna chahte hain?`);
+    
+    if (isConfirmed) {
+      try {
+        const response = await fetch(`https://gig-swap-hsp-backend.vercel.app/api/worker/update-status/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: authorizationToken,
+          },
+          body: JSON.stringify({ 
+            status: status, 
+            workerName: user.username // Auth se worker ka naam bhej rahe hain
+          }),
+        });
 
-    // frontend UI update
-    setContactData((prev) =>
-      prev.map((item) =>
-        item._id === id ? { ...item, status } : item
-      )
-    );
+        if (response.ok) {
+          toast.success(`Status updated to ${status}`);
+          getContactsData(); // List refresh karne ke liye
+        } else {
+          toast.error("Status update fail ho gaya");
+        }
+      } catch (error) {
+        console.log("Error updating status:", error);
+        toast.error("Server error!");
+      }
+    }
   };
 
   return (
@@ -49,67 +70,38 @@ export const WorkerContacts = () => {
 
       <div className="container worker-contacts">
         {contactData.map((cur) => {
-          const {
-            username,
-            email,
-            message,
-            address,
-            time,
-            date,
-            _id,
-            status,
-          } = cur;
+          const { username, email, message, address, time, date, _id, status } = cur;
 
           return (
             <div key={_id} className="contact-card">
-              <p><strong>Name:</strong> {username}</p>
+              <p><strong>Customer:</strong> {username}</p>
               <p><strong>Email:</strong> {email}</p>
               <p><strong>Service:</strong> {message}</p>
-              
-              {/* 📅 Date format fixed (Admin jaisa) */}
               <p><strong>Date:</strong> {new Date(date).toLocaleDateString()}</p>
-              
               <p><strong>Time:</strong> {time}</p>
               
               <p>
                 <strong>Address:</strong>{" "}
-                <a 
-                  href={address} 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  style={{ color: "#007bff", fontWeight: "bold", textDecoration: "underline" }}
-                >
+                <a href={address} target="_blank" rel="noreferrer" className="map-link">
                   View on Map 📍
                 </a>
               </p>
 
               <p>
                 <strong>Status:</strong>{" "}
-                <span className={`status ${status || "pending"}`}>
+                <span className={`status-badge ${status || "Pending"}`}>
                   {status || "Pending"}
                 </span>
               </p>
 
-              {/* 🔘 Buttons */}
               <div className="status-buttons">
-                <button
-                  className="btn accept"
-                  onClick={() => handleStatus(_id, "Accepted")}
-                >
+                <button className="btn accept" onClick={() => handleStatus(_id, "Accepted")}>
                   Accept
                 </button>
-
-                <button
-                  className="btn pending"
-                  onClick={() => handleStatus(_id, "Pending")}
-                >
+                <button className="btn pending" onClick={() => handleStatus(_id, "Pending")}>
                   Pending
                 </button>
-
-                <button
-                  className="btn completed"
-                  onClick={() => handleStatus(_id, "Completed")}
-                >
+                <button className="btn completed" onClick={() => handleStatus(_id, "Completed")}>
                   Completed
                 </button>
               </div>

@@ -5,13 +5,9 @@ const workerMiddleware = require("../middlewares/worker-middleware");
 
 const router = express.Router();
 
-// 🔴 workerMiddleware ADD KARNA ZAROORI HAI
-router
-  .route("/contacts")
-  .get(
-    authMiddleware,
-    workerMiddleware,   // 🔴 THIS LINE WAS MISSING
-    workerController.getAllContacts
-  );
+router.route("/contacts").get(authMiddleware, workerMiddleware, workerController.getAllContacts);
+
+// 🟢 Naya Route status update ke liye
+router.route("/update-status/:id").patch(authMiddleware, workerMiddleware, workerController.updateBookingStatus);
 
 module.exports = router;

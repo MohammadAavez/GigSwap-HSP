@@ -7,8 +7,10 @@ const contactSchema = new Schema({
   address: { type: String, required: true },
   date: { type: Date, required: true },
   time: { type: String, required: true },
+  // 🟢 Naye Fields
+  status: { type: String, default: "Pending" }, 
+  acceptedBy: { type: String, default: null },
 });
 
-//create a model or a collection
 const Contact = model("Contact", contactSchema);
 module.exports = Contact;
