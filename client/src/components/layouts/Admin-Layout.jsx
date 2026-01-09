@@ -2,7 +2,7 @@ import { NavLink, Outlet, Navigate } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import { FaMessage } from "react-icons/fa6";
 import { useAuth } from "../../store/auth";
-import ".Admin-Layout.css"; // 👈 Ye line add karein
+import "./Admin-Layout.css"; // 👈 Ye line add karein
 
 export const AdminLayout = () => {
   const { user, isLoading } = useAuth();
