@@ -52,11 +52,11 @@ export const AdminContacts = () => {
     <section className="admin-contacts-section">
       <h1 className="main-heading">Booked Services</h1>
 
-      <div className="container admin-users">
+      <div className="container admin-contacts-grid">
         {contactData.map((curContactData, index) => {
           const { username, email, message, address, time, date, _id, status, acceptedBy } = curContactData;
           return (
-            <div key={index} className="contact-card" style={{ border: "1px solid #ccc", padding: "15px", borderRadius: "8px", marginBottom: "15px" }}>
+            <div key={index} className="contact-card-responsive">
               <p><strong>Name:</strong> {username}</p>
               <p><strong>Email:</strong> {email}</p>
               <p><strong>Service:</strong> {message}</p>
@@ -65,33 +65,28 @@ export const AdminContacts = () => {
               
               <p>
                 <strong>Address:</strong>{" "}
-                <a href={address} target="_blank" rel="noreferrer" style={{ color: "#007bff", fontWeight: "bold", textDecoration: "underline" }}>
+                <a href={address} target="_blank" rel="noreferrer" className="location-link">
                   View Customer Location 📍
                 </a>
               </p>
 
-              {/* 🟢 Status & Worker Info Section */}
-              <div style={{ marginTop: "10px", padding: "10px", backgroundColor: "#f9f9f9", borderRadius: "5px" }}>
+              <div className="status-box">
                 <p>
                   <strong>Current Status:</strong>{" "}
-                  <span style={{ 
-                    color: status === "Accepted" ? "green" : status === "Completed" ? "blue" : "orange",
-                    fontWeight: "bold"
-                  }}>
+                  <span className={`status-text ${status}`}>
                     {status || "Pending"}
                   </span>
                 </p>
 
-                {/* ✅ Accepted aur Completed dono par worker ka naam dikhega */}
                 {(status === "Accepted" || status === "Completed") && acceptedBy && (
-                  <p style={{ margin: "5px 0 0 0", color: "#555", fontSize: "0.9rem" }}>
+                  <p className="worker-info">
                     {status === "Accepted" ? "✅ Assigned to: " : "🏆 Completed by: "} 
                     <strong>{acceptedBy}</strong>
                   </p>
                 )}
               </div>
 
-              <button className="btn" onClick={() => deleteContactById(_id)} style={{ backgroundColor: "#ff4d4d", marginTop: "15px", color: "white", border: "none", padding: "8px 12px", borderRadius: "4px", cursor: "pointer" }}>
+              <button className="btn-delete" onClick={() => deleteContactById(_id)}>
                 Delete Booking
               </button>
             </div>

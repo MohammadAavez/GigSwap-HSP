@@ -1,151 +1,179 @@
-/* users css */
+/* --- Global & Admin Layout Header --- */
+.admin-header {
+  background-color: #2a3f59;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+}
 
-/* Container and table styling */
+.admin-header nav ul {
+  display: flex;
+  justify-content: center; /* Mobile par center dikhega */
+  list-style: none;
+  gap: 20px;
+  padding: 0;
+}
+
+.admin-header nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+}
+
+/* --- Admin Users Section (Table) --- */
 .admin-users-section {
-  padding: 2rem;
+  padding: 1rem; /* Mobile ke liye padding kam ki */
   background: #f5f7fa;
   font-family: sans-serif;
 }
 
 .admin-users table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border-radius: 8px;
   overflow: hidden;
 }
 
-/* Header */
 .admin-users thead th {
   background-color: #2a3f59;
   color: #fff;
   text-align: left;
   padding: 12px 16px;
-  position: sticky;
-  top: 0;
-  z-index: 1;
 }
 
-/* Rows */
-.admin-users tbody tr {
-  border-bottom: 1px solid #e5e9f0;
-  transition: background-color 0.2s;
-}
-
-.admin-users tbody tr:nth-child(even) {
-  background-color: #f9fbfd;
-}
-
-.admin-users tbody tr:hover {
-  background-color: #eef5fc;
-}
-
-/* Cells */
 .admin-users td {
   padding: 12px 16px;
-  vertical-align: middle;
+  border-bottom: 1px solid #e5e9f0;
 }
 
-/* Action cells */
-.admin-users td:nth-child(n + 4) {
-  text-align: center;
-  color: #007bff;
-  cursor: pointer;
-}
-.admin-users td:nth-child(n + 4):hover {
-  text-decoration: underline;
-}
-
-/* Responsive */
+/* 🟢 MOBILE VIEW FOR TABLE (768px se kam screen par) */
 @media (max-width: 768px) {
-  .admin-users table,
-  .admin-users thead,
-  .admin-users tbody,
-  .admin-users th,
-  .admin-users td,
+  .admin-users table, 
+  .admin-users thead, 
+  .admin-users tbody, 
+  .admin-users th, 
+  .admin-users td, 
   .admin-users tr {
-    display: block;
+    display: block; /* Table ko vertical blocks mein badla */
   }
+
   .admin-users thead tr {
     position: absolute;
     top: -9999px;
-    left: -9999px;
+    left: -9999px; /* Header hide kar diya mobile par */
   }
+
   .admin-users tr {
-    margin-bottom: 1rem;
-    border-bottom: 2px solid #ddd;
+    margin-bottom: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
   }
+
   .admin-users td {
+    border: none;
     position: relative;
-    padding-left: 50%;
+    padding-left: 50%; /* Label ke liye jagah chhodi */
+    text-align: right;
+    border-bottom: 1px solid #eee;
   }
+
   .admin-users td:before {
-    content: attr(data-label);
+    content: attr(data-label); /* HTML ke data-label se text uthayega */
     position: absolute;
     left: 16px;
+    width: 45%;
     font-weight: bold;
+    text-align: left;
+    color: #2a3f59;
   }
 }
 
-/* Admin Contact.jsx */
-
+/* --- Admin Contact Section (Cards) --- */
 .admin-contacts-section {
-  padding: 2rem;
+  padding: 2rem 1rem;
   background-color: #f9fafb;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.admin-contacts-section h1 {
+.main-heading {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 1.5rem;
   color: #333;
 }
 
-.container.admin-users {
+/* Responsive Grid for Contacts */
+.admin-contacts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
 }
 
-.container.admin-users > div {
+.contact-card-responsive {
   background-color: #ffffff;
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
+  border: 1px solid #ccc;
+  transition: transform 0.2s;
 }
 
-.container.admin-users > div:hover {
+.contact-card-responsive:hover {
   transform: translateY(-5px);
 }
 
-.container.admin-users p {
-  margin: 0.5rem 0;
+.location-link {
+  color: #007bff;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* Status Styling */
+.status-box {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+.status-text.Accepted { color: green; font-weight: bold; }
+.status-text.Completed { color: blue; font-weight: bold; }
+.status-text.Pending { color: orange; font-weight: bold; }
+
+.worker-info {
+  margin-top: 5px;
+  font-size: 0.9rem;
   color: #555;
-  font-size: 1rem;
-  line-height: 1.5;
 }
 
-.container.admin-users p:first-of-type {
-  font-weight: 600;
-  color: #222;
-}
-
-.btn {
+/* Delete Button */
+.btn-delete {
+  width: 100%;
   margin-top: 1rem;
-  padding: 0.5rem 1rem;
+  padding: 0.8rem;
   background-color: #e53e3e;
   color: #ffffff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
+  font-weight: bold;
 }
 
-.btn:hover {
+.btn-delete:hover {
   background-color: #c53030;
+}
+
+/* 🟢 MOBILE GRID ADJUSTMENT */
+@media (max-width: 480px) {
+  .admin-contacts-grid {
+    grid-template-columns: 1fr; /* Mobile par ek card ek row mein */
+  }
+  .main-heading {
+    font-size: 1.5rem;
+  }
 }
