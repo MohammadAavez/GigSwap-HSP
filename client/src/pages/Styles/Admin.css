@@ -1,82 +1,179 @@
-/* --- Desktop View (Laptop) --- */
+/* --- Global & Admin Layout Header --- */
 .admin-header {
   background-color: #2a3f59;
-  padding: 1.2rem 0;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  padding: 1rem 0;
+  margin-bottom: 2rem;
 }
 
 .admin-header nav ul {
   display: flex;
-  justify-content: center;
+  justify-content: center; /* Mobile par center dikhega */
   list-style: none;
-  gap: 40px;
-  margin: 0;
+  gap: 20px;
   padding: 0;
 }
 
 .admin-header nav a {
-  color: #ffffff;
+  color: white;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 1.1rem;
-  padding: 5px 10px;
-  transition: all 0.3s ease;
+  gap: 8px;
+  font-size: 1rem;
 }
 
-.admin-header nav a.active {
-  color: #3498db;
-  border-bottom: 2px solid #3498db;
+/* --- Admin Users Section (Table) --- */
+.admin-users-section {
+  padding: 1rem; /* Mobile ke liye padding kam ki */
+  background: #f5f7fa;
+  font-family: sans-serif;
 }
 
-/* --- 📱 Mobile View (Header ko Buttons mein badalne ke liye) --- */
+.admin-users table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.admin-users thead th {
+  background-color: #2a3f59;
+  color: #fff;
+  text-align: left;
+  padding: 12px 16px;
+}
+
+.admin-users td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e9f0;
+}
+
+/* 🟢 MOBILE VIEW FOR TABLE (768px se kam screen par) */
 @media (max-width: 768px) {
-  .admin-header {
-    padding: 15px 0;
-    background-color: #1a2a3a; /* Thoda dark color mobile ke liye */
+  .admin-users table, 
+  .admin-users thead, 
+  .admin-users tbody, 
+  .admin-users th, 
+  .admin-users td, 
+  .admin-users tr {
+    display: block; /* Table ko vertical blocks mein badla */
   }
 
-  /* Header ke andar ka title ya extra space agar ho toh use hide karne ke liye */
-  .admin-header .container {
-    padding: 0 10px;
+  .admin-users thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px; /* Header hide kar diya mobile par */
   }
 
-  .admin-header nav ul {
-    display: flex; /* Buttons ko ek line mein laane ke liye */
-    justify-content: space-between;
-    gap: 12px;
+  .admin-users tr {
+    margin-bottom: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
   }
 
-  .admin-header nav li {
-    flex: 1; /* Dono buttons barabar space lenge */
-    list-style: none;
+  .admin-users td {
+    border: none;
+    position: relative;
+    padding-left: 50%; /* Label ke liye jagah chhodi */
+    text-align: right;
+    border-bottom: 1px solid #eee;
   }
 
-  .admin-header nav a {
-    display: flex;
-    flex-direction: column; /* Icon upar aur text niche */
-    align-items: center;
-    justify-content: center;
-    background: #2c3e50;
-    padding: 12px 5px;
-    border-radius: 10px;
-    font-size: 0.8rem; /* Chota text taaki fit ho jaye */
-    gap: 5px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  .admin-users td:before {
+    content: attr(data-label); /* HTML ke data-label se text uthayega */
+    position: absolute;
+    left: 16px;
+    width: 45%;
+    font-weight: bold;
+    text-align: left;
+    color: #2a3f59;
   }
+}
 
-  /* Active Button (Jo page open hai) */
-  .admin-header nav a.active {
-    background: #3498db;
-    color: #fff;
-    border: 1px solid #fff;
-    border-bottom: 1px solid #fff; /* Desktop wala line hata ke poora button highlight */
+/* --- Admin Contact Section (Cards) --- */
+.admin-contacts-section {
+  padding: 2rem 1rem;
+  background-color: #f9fafb;
+}
+
+.main-heading {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+/* Responsive Grid for Contacts */
+.admin-contacts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.contact-card-responsive {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  transition: transform 0.2s;
+}
+
+.contact-card-responsive:hover {
+  transform: translateY(-5px);
+}
+
+.location-link {
+  color: #007bff;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* Status Styling */
+.status-box {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+.status-text.Accepted { color: green; font-weight: bold; }
+.status-text.Completed { color: blue; font-weight: bold; }
+.status-text.Pending { color: orange; font-weight: bold; }
+
+.worker-info {
+  margin-top: 5px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Delete Button */
+.btn-delete {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.8rem;
+  background-color: #e53e3e;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-delete:hover {
+  background-color: #c53030;
+}
+
+/* 🟢 MOBILE GRID ADJUSTMENT */
+@media (max-width: 480px) {
+  .admin-contacts-grid {
+    grid-template-columns: 1fr; /* Mobile par ek card ek row mein */
   }
-
-  .admin-header nav a svg {
-    font-size: 1.4rem; /* Icon thoda bada */
+  .main-heading {
+    font-size: 1.5rem;
   }
 }
