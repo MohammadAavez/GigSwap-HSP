@@ -86,9 +86,9 @@ export const AdminContacts = () => {
                 )}
               </div>
 
-              <button className="btn-delete" onClick={() => deleteContactById(_id)}>
+              {/* <button className="btn-delete" onClick={() => deleteContactById(_id)}>
                 Delete Booking
-              </button>
+              </button> */}
             </div>
           );
         })}
