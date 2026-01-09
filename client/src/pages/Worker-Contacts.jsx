@@ -99,7 +99,7 @@ export const WorkerContacts = () => {
               <div className="status-buttons">
                 {isLockedByOthers ? (
                   <p style={{ color: "#d9534f", fontWeight: "bold", marginTop: "10px" }}>
-                    Occupied by another worker
+                    Already Taken
                   </p>
                 ) : (
                   <>
